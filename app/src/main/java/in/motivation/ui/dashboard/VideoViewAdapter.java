@@ -1,65 +1,58 @@
 package in.motivation.ui.dashboard;
+
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-
 import in.motivation.R;
 
-
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-
-
+public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.ViewHolder> {
     Context context;
     ArrayList<String> names;
     int progresscout=0;
-    ArrayList< AsyncTaskExample>  obj=new ArrayList();
+
     URL ImageUrl = null;
     InputStream is = null;
-
     Bitmap bmImg = null;
-
-
     ProgressDialog progress=null;
 
-    public CategoryAdapter(Context context, ArrayList<String> name) {
+    public VideoViewAdapter(Context context, ArrayList<String> name) {
         this.context = context;
         this.names = name;
 
         progress = new ProgressDialog(context);
         progress.setMessage("Please wait....");
         progress.setIndeterminate(false);
+        progress.setIndeterminate(false);
         progress.setCancelable(true);
-     //   progress.show();
+        //   progress.show();
 
     }
 
@@ -67,18 +60,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public class  ViewHolder extends RecyclerView.ViewHolder
     {
 
-         TextView image_name;
+        TextView image_name;
         ImageView imageView;
-         LinearLayout layout;
+        LinearLayout layout;
 
 
 
         public ViewHolder(View itemview ){
             super(itemview);
-            imageView=(itemView.findViewById(R.id.imageView));
+            imageView=(itemView.findViewById(R.id.video_imageView));
             image_name=itemview.findViewById(R.id.name);
-            layout=itemview.findViewById(R.id.parent_layout);
-            System.out.println("....................+...................."+"Category\n");
+            layout=itemview.findViewById(R.id.video_parent);
+            System.out.println("..............."+"Video view adapter"+"...............");
 
 
 
@@ -90,10 +83,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_view, parent, false);
         ViewHolder holder = new ViewHolder(view);
-        context=parent.getContext();
-
 
         return holder;
 
@@ -102,7 +93,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-       // holder.image_name.setText(names.get(position));
+        // holder.image_name.setText(names.get(position));
         //imageView.setImageResource(R.drawable.exam)
 
         Listinfo info =new Listinfo();
@@ -127,7 +118,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                                 dialog.cancel();
                             }
                         });
-                        builder1.setPositiveButton(
+                builder1.setPositiveButton(
                         "Exit",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -146,110 +137,45 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
             @Override
             public void onSuccess() {
-             //   System.out.println("......................P.....................................   "+names.size());
+              //  System.out.println("......................P.....................................   "+names.size());
                 progress.hide();
-              //  progress.dismiss();
-              //  progressbar.setVisibility(View.GONE);
+                //  progress.dismiss();
+                //  progressbar.setVisibility(View.GONE);
             }});
-       //  new AsyncTaskExample(info).execute();
-
-
-     //   obj[0]=asyncTask;
-     //   obj.add(asyncTask);
-       // obj.get(0).execute(names.get(position));
-       // AsyncTaskExample asyncTask=new AsyncTaskExample();
-      //  asyncTask.execute(names.get(position));
 
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+//                System.out.println("...................onclick............videoAd");
 
-                System.out.println("...................onclick............CAT");
-
-                Fragment calendarFragment = ((AppCompatActivity)context).getSupportFragmentManager().findFragmentById(R.id.navigation_dashboard);
+                Fragment calendarFragment = ((AppCompatActivity)context).getSupportFragmentManager().findFragmentById(R.id.parent_layout);
                 if (calendarFragment != null)
                 {
+                 //   System.out.println("...................onclick............removing video_list");
                     ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().remove(calendarFragment).commit();
                 }
-              //  Toast.makeText(context, names.get(position), Toast.LENGTH_SHORT).show();
-                 Fragment newFragment = new VideoFragment(names.get(position));
-                 FragmentTransaction ft = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+
+                Toast.makeText(context, names.get(position), Toast.LENGTH_SHORT).show();
+                Fragment newFragment = new YoutubeFragment("Z9XWbqxyn3E");
+                FragmentTransaction ft = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
 
                 ft.replace(R.id.nav_host_fragment,newFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack("Cat");
+                ft.addToBackStack("video");
                 ft.commit();
 
             }
         });
-}
+    }
 
     @Override
     public int getItemCount() {
-
         return names.size();
     }
 
 
-    public class AsyncTaskExample extends AsyncTask<Void, String, Bitmap> {
-
-        private Listinfo listinfo;
-
-        // a constructor so that you can pass the object and use
-        AsyncTaskExample(Listinfo listinfo){
-            this.listinfo = listinfo;
-        }
-        @Override
-        protected void onPreExecute() {
-
-            if(progress==null) {
-                super.onPreExecute();
-                progress = new ProgressDialog(context);
-                progress.setMessage("Please wait...It is downloading");
-                progress.setIndeterminate(false);
-               // progress.setCancelable(false);
-             //   progress.show();
-            }
-        }
-        @Override
-        protected Bitmap doInBackground(Void... info) {
-
-            try {
-                ImageUrl = new URL(listinfo.url);
-                HttpURLConnection conn = (HttpURLConnection) ImageUrl.openConnection();
-                conn.setDoInput(true);
-                conn.connect();
-                is = conn.getInputStream();
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.RGB_565;
-                bmImg = BitmapFactory.decodeStream(is, null, options);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bmImg;
-        }
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-         //   System.out.println("......................P.....................................   "+listinfo.pos+" : "+listinfo.url);
-
-            /*
-             if(listinfo.pos==4)
-             {
-                progress.hide();
-             }
-                */
-
-            if(listinfo.view.imageView!=null) {
-
-                listinfo.view.imageView.setImageBitmap(bitmap);
-            }
-
-
-        }
-    }
 
 
     class Listinfo{

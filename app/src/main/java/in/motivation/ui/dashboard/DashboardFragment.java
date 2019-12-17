@@ -56,8 +56,8 @@ public class DashboardFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-       // Log.d(TAG, "initRecyclerView: init recyclerview.");
-        RecyclerView recyclerView = root.findViewById(R.id.recycleview);
+       ///Log.d(TAG, "initRecyclerView: init recyclerview.");
+      RecyclerView recyclerView = root.findViewById(R.id.recycleview);
 
          adapter = new CategoryAdapter(getContext(), names);
         recyclerView.setAdapter(adapter);
@@ -73,20 +73,20 @@ public class DashboardFragment extends Fragment {
         //progressDialog.show();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://crazywork.in:4000/project/9663453871/submitted", null, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, "http://crazywork.in:5000/category/all", null, new Response.Listener<JSONObject>() {
         @Override
             public void onResponse(JSONObject response) {
             try {
 
 
-               JSONArray array=(JSONArray)response.get("rows");
+               JSONArray array=(JSONArray)response.get("data");
                 CatList list=new CatList();
 
                 for (int i = 0; i < array.length(); i++) {
 
                     try {
                         JSONObject jsonObject = array.getJSONObject(i);
-                        System.out.println("..........................."+ jsonObject.get("desc").toString());
+                      //  System.out.println("..........................."+ jsonObject.get("desc").toString());
                         names.add(jsonObject.get("desc").toString());
                         progress.hide();
                         adapter.notifyDataSetChanged();
