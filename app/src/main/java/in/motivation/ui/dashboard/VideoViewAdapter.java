@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.youtube.player.YouTubePlayer;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +38,7 @@ import in.motivation.R;
 
 public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.ViewHolder> {
     Context context;
-    ArrayList<String> names;
+    ArrayList<VideoList> video_list;
     int progresscout=0;
 
     URL ImageUrl = null;
@@ -43,9 +46,9 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     Bitmap bmImg = null;
     ProgressDialog progress=null;
 
-    public VideoViewAdapter(Context context, ArrayList<String> name) {
+    public VideoViewAdapter(Context context, ArrayList<VideoList> video_list) {
         this.context = context;
-        this.names = name;
+        this.video_list = video_list;
 
         progress = new ProgressDialog(context);
         progress.setMessage("Please wait....");
@@ -60,7 +63,7 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     public class  ViewHolder extends RecyclerView.ViewHolder
     {
 
-        TextView image_name;
+        TextView desc;
         ImageView imageView;
         LinearLayout layout;
 
@@ -69,7 +72,7 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
         public ViewHolder(View itemview ){
             super(itemview);
             imageView=(itemView.findViewById(R.id.video_imageView));
-            image_name=itemview.findViewById(R.id.name);
+            desc=itemview.findViewById(R.id.textview);
             layout=itemview.findViewById(R.id.video_parent);
             System.out.println("..............."+"Video view adapter"+"...............");
 
@@ -96,14 +99,16 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
         // holder.image_name.setText(names.get(position));
         //imageView.setImageResource(R.drawable.exam)
 
-        Listinfo info =new Listinfo();
-        info.url=names.get(position);
-        info.view=holder;
-        info.pos=position;
-        info.size=names.size()-1;
+        ///Listinfo info =new Listinfo();
+        //info.url=names.get(position);
+        //info.view=holder;
+        //info.pos=position;
+      //  info.size=names.size()-1;
         progress.show();
+        System.out.println(video_list.get(position).thum_url);
+        holder.desc.setText(video_list.get(position).title);
 
-        Picasso.get().load(names.get(position)).noPlaceholder().into(holder.imageView,new Callback()
+        Picasso.get().load(video_list.get(position).thum_url).noPlaceholder().into(holder.imageView,new Callback()
         {
             @Override
             public void onError(Exception e) {
@@ -148,7 +153,15 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
             @Override
             public void onClick(View v) {
 
-//                System.out.println("...................onclick............videoAd");
+                Intent intent = new Intent(context,YoutubePlayer.class);
+                String id = "IIclzX2dlzU";
+                intent.putExtra("id", id);
+                context.startActivity(intent);
+
+
+//
+//               System.out.println("...................onclick............videoAd");
+ /*
 
                 Fragment calendarFragment = ((AppCompatActivity)context).getSupportFragmentManager().findFragmentById(R.id.parent_layout);
                 if (calendarFragment != null)
@@ -157,14 +170,16 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
                     ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().remove(calendarFragment).commit();
                 }
 
-                Toast.makeText(context, names.get(position), Toast.LENGTH_SHORT).show();
-                Fragment newFragment = new YoutubeFragment("Z9XWbqxyn3E");
-                FragmentTransaction ft = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+               // Toast.makeText(context, video_list.get(position), Toast.LENGTH_SHORT).show();
 
-                ft.replace(R.id.nav_host_fragment,newFragment);
+
+
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.addToBackStack("video");
                 ft.commit();
+                */
+
+
 
             }
         });
@@ -172,7 +187,7 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
 
     @Override
     public int getItemCount() {
-        return names.size();
+        return video_list.size();
     }
 
 

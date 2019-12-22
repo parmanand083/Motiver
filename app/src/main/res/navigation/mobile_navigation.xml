@@ -14,12 +14,17 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="in.motivation.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="Videos"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
+        android:id="@+id/navigation_quotes"
+        android:name="in.motivation.ui.Quotes.QuotesFragment"
+        android:label="Quotes"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="in.motivation.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:label="More"
+        tools:layout="@layout/quotes_fragment" />
 </navigation>

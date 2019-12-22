@@ -2,6 +2,7 @@ package in.motivation.ui.dashboard;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SyncAdapterType;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -40,26 +42,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
     Context context;
-    ArrayList<String> names;
-    int progresscout=0;
-    ArrayList< AsyncTaskExample>  obj=new ArrayList();
-    URL ImageUrl = null;
-    InputStream is = null;
-
-    Bitmap bmImg = null;
-
-
+    ArrayList<CategoryList> category_list=null;
     ProgressDialog progress=null;
 
-    public CategoryAdapter(Context context, ArrayList<String> name) {
+    public CategoryAdapter(Context context, ArrayList<CategoryList> category_list) {
         this.context = context;
-        this.names = name;
-
+        this.category_list=category_list;
         progress = new ProgressDialog(context);
         progress.setMessage("Please wait....");
         progress.setIndeterminate(false);
         progress.setCancelable(true);
-     //   progress.show();
 
     }
 
@@ -67,16 +59,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public class  ViewHolder extends RecyclerView.ViewHolder
     {
 
-         TextView image_name;
-        ImageView imageView;
+         TextView cat_name;
+         ImageView cat_imageView;
          LinearLayout layout;
 
 
 
         public ViewHolder(View itemview ){
             super(itemview);
-            imageView=(itemView.findViewById(R.id.imageView));
-            image_name=itemview.findViewById(R.id.name);
+            cat_name=(itemView.findViewById(R.id.name));
+            cat_imageView=itemView.findViewById(R.id.imageView);
             layout=itemview.findViewById(R.id.parent_layout);
             System.out.println("....................+...................."+"Category\n");
 
@@ -106,13 +98,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         //imageView.setImageResource(R.drawable.exam)
 
         Listinfo info =new Listinfo();
-        info.url=names.get(position);
+        info.url=category_list.get(position).url;
         info.view=holder;
         info.pos=position;
-        info.size=names.size()-1;
+        info.size=category_list.size()-1;
         progress.show();
+        //System.
 
-        Picasso.get().load(names.get(position)).noPlaceholder().into(holder.imageView,new Callback()
+        Picasso.get().load(category_list.get(position).url).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.cat_imageView,new Callback()
         {
             @Override
             public void onError(Exception e) {
@@ -167,18 +160,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
                 System.out.println("...................onclick............CAT");
-
+/*
                 Fragment calendarFragment = ((AppCompatActivity)context).getSupportFragmentManager().findFragmentById(R.id.navigation_dashboard);
                 if (calendarFragment != null)
                 {
                     ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().remove(calendarFragment).commit();
-                }
+                }*/
+
               //  Toast.makeText(context, names.get(position), Toast.LENGTH_SHORT).show();
-                 Fragment newFragment = new VideoFragment(names.get(position));
+                Fragment newFragment = new VideoFragment(category_list.get(position).id);
                  FragmentTransaction ft = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
 
                 ft.replace(R.id.nav_host_fragment,newFragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+             //   ft.add()
+               // ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.addToBackStack("Cat");
                 ft.commit();
 
@@ -189,67 +184,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public int getItemCount() {
 
-        return names.size();
+        return category_list.size();
     }
 
 
-    public class AsyncTaskExample extends AsyncTask<Void, String, Bitmap> {
-
-        private Listinfo listinfo;
-
-        // a constructor so that you can pass the object and use
-        AsyncTaskExample(Listinfo listinfo){
-            this.listinfo = listinfo;
-        }
-        @Override
-        protected void onPreExecute() {
-
-            if(progress==null) {
-                super.onPreExecute();
-                progress = new ProgressDialog(context);
-                progress.setMessage("Please wait...It is downloading");
-                progress.setIndeterminate(false);
-               // progress.setCancelable(false);
-             //   progress.show();
-            }
-        }
-        @Override
-        protected Bitmap doInBackground(Void... info) {
-
-            try {
-                ImageUrl = new URL(listinfo.url);
-                HttpURLConnection conn = (HttpURLConnection) ImageUrl.openConnection();
-                conn.setDoInput(true);
-                conn.connect();
-                is = conn.getInputStream();
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.RGB_565;
-                bmImg = BitmapFactory.decodeStream(is, null, options);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bmImg;
-        }
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-         //   System.out.println("......................P.....................................   "+listinfo.pos+" : "+listinfo.url);
-
-            /*
-             if(listinfo.pos==4)
-             {
-                progress.hide();
-             }
-                */
-
-            if(listinfo.view.imageView!=null) {
-
-                listinfo.view.imageView.setImageBitmap(bitmap);
-            }
-
-
-        }
-    }
 
 
     class Listinfo{

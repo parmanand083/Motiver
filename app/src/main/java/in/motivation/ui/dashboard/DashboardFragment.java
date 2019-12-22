@@ -5,7 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -32,17 +34,45 @@ import java.util.ArrayList;
 
 import in.motivation.R;
 
+import static com.android.volley.VolleyLog.TAG;
 
-class CatList{
+
+class CategoryList{
     int id;
     String name;
-    String image_url;
+    String url;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 }
+
+
 public class DashboardFragment extends Fragment {
 
+
     ProgressDialog progress=null;
-    ArrayList<String> names=new ArrayList< String>();
+    ArrayList<CategoryList> category_list=new ArrayList();
     CategoryAdapter adapter=null;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
@@ -56,10 +86,11 @@ public class DashboardFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-       ///Log.d(TAG, "initRecyclerView: init recyclerview.");
+
+      // Log.d(TAG, "initRecyclerView: init recyclerview.");
       RecyclerView recyclerView = root.findViewById(R.id.recycleview);
 
-         adapter = new CategoryAdapter(getContext(), names);
+         adapter = new CategoryAdapter(getContext(), category_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -78,18 +109,18 @@ public class DashboardFragment extends Fragment {
             public void onResponse(JSONObject response) {
             try {
 
-
-               JSONArray array=(JSONArray)response.get("data");
-                CatList list=new CatList();
-
-                for (int i = 0; i < array.length(); i++) {
-
+                 JSONArray array=(JSONArray)response.get("data");
+                 CategoryList list=null;
+                 for (int i = 0; i < array.length(); i++) {
+                    list=new CategoryList();
                     try {
                         JSONObject jsonObject = array.getJSONObject(i);
-                      //  System.out.println("..........................."+ jsonObject.get("desc").toString());
-                        names.add(jsonObject.get("desc").toString());
-                        progress.hide();
-                        adapter.notifyDataSetChanged();
+                        list.setId(Integer.parseInt(jsonObject.get("cat_id").toString()));
+                        list.setName(jsonObject.get("cat_name").toString());
+                        list.setUrl(jsonObject.get("pic_path").toString());
+                        System.out.println("..........................."+ jsonObject.get("pic_path").toString());
+                      //  names.add(jsonObject.get("desc").toString());
+                        category_list.add(list);
 
                     }catch (Exception e)
                     {
@@ -97,7 +128,8 @@ public class DashboardFragment extends Fragment {
                     }
 
                 }
-
+                progress.hide();
+                adapter.notifyDataSetChanged();
 
 
                     } catch (JSONException e) {
@@ -131,8 +163,6 @@ public class DashboardFragment extends Fragment {
                                 System.exit(0);
                             }
                         });
-
-
 
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
