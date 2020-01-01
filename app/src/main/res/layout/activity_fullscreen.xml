@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:textAlignment="center"
+    android:background="@color/colorSecondary"
    >
 
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:maxWidth="85dp"
+        android:layout_gravity="center"
+        android:maxHeight="85dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/logoo" />
 </LinearLayout>

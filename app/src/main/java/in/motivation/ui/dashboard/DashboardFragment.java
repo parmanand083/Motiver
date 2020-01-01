@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.motivation.R;
+import in.motivation.ui.util.ErrorDialog;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -137,38 +138,16 @@ public class DashboardFragment extends Fragment {
                 e.printStackTrace();
             }
 
-        //    System.out.println("..............................................."+response.toString());
-               // adapter.notifyDataSetChanged();
-             //   progressDialog.dismiss();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progress.hide();
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
-                builder1.setMessage("Unable to load ...Check your internet connection");
-                builder1.setCancelable(true);
-                builder1.setNegativeButton(
-                        "Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                builder1.setPositiveButton(
-                        "Exit",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                getActivity().finish();
-                                System.exit(0);
-                            }
-                        });
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-                System.out.println( error.toString());
-               // progressDialog.dismiss();
+                ErrorDialog errorDialog=new ErrorDialog("Unable to access category list.Please try after sometime",getContext());
+                errorDialog.showLoader();
             }
+
+
         });
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(jsonObjectRequest);

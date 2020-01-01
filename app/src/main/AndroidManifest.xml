@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="in.motivation">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        tools:replace="android:label"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logoo"
         android:label="Motiver"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logoo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
@@ -16,6 +18,7 @@
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Motiver"
+
             android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,8 +31,9 @@
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity
+
             android:name=".MainActivity"
-            android:label="@string/app_name"></activity>
+             />
     </application>
 
 </manifest>

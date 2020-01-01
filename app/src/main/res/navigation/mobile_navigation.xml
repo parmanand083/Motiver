@@ -21,10 +21,10 @@
         android:id="@+id/navigation_quotes"
         android:name="in.motivation.ui.Quotes.QuotesFragment"
         android:label="Quotes"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_more" />
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="in.motivation.ui.notifications.NotificationsFragment"
+        android:name="in.motivation.ui.more.MoreFragment"
         android:label="More"
         tools:layout="@layout/quotes_fragment" />
 </navigation>

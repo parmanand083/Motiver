@@ -36,6 +36,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import in.motivation.R;
+import in.motivation.ui.util.ErrorDialog;
 
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -94,64 +95,23 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-       // holder.image_name.setText(names.get(position));
-        //imageView.setImageResource(R.drawable.exam)
 
-        Listinfo info =new Listinfo();
-        info.url=category_list.get(position).url;
-        info.view=holder;
-        info.pos=position;
-        info.size=category_list.size()-1;
-        progress.show();
-        //System.
 
         Picasso.get().load(category_list.get(position).url).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.cat_imageView,new Callback()
         {
             @Override
             public void onError(Exception e) {
                 progress.hide();
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(context,R.style.MyDialogTheme);
-                builder1.setMessage("Unable to load ...Check your internet connection");
-                builder1.setCancelable(true);
-                builder1.setNegativeButton(
-                        "Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                        builder1.setPositiveButton(
-                        "Exit",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                ((Activity)context).finish();
-                                System.exit(0);
-                            }
-                        });
-
-
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-
-
+                ErrorDialog errorDialog=new ErrorDialog("Unable to load images.Please try after sometime",context);
+                errorDialog.showLoader();
             }
 
             @Override
             public void onSuccess() {
-             //   System.out.println("......................P.....................................   "+names.size());
+
                 progress.hide();
-              //  progress.dismiss();
-              //  progressbar.setVisibility(View.GONE);
             }});
-       //  new AsyncTaskExample(info).execute();
 
-
-     //   obj[0]=asyncTask;
-     //   obj.add(asyncTask);
-       // obj.get(0).execute(names.get(position));
-       // AsyncTaskExample asyncTask=new AsyncTaskExample();
-      //  asyncTask.execute(names.get(position));
 
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
@@ -189,16 +149,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
 
-
-    class Listinfo{
-
-
-        public  ViewHolder view;
-        public  int pos;
-        public  String url;
-        public  int size;
-
-    }
 }
 
 

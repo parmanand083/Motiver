@@ -24,6 +24,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fullscreen);
 
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
