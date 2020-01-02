@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
 
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="200dp"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
         android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:layout_marginRight="@dimen/mtrl_card_spacing">
@@ -23,7 +23,6 @@
                 android:id="@+id/imageView"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/loader_image"

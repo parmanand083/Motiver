@@ -9,7 +9,7 @@
     <com.google.android.material.card.MaterialCardView
 
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="310dp"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
         android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:layout_marginRight="@dimen/mtrl_card_spacing">
@@ -17,6 +17,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/video_imageView"
@@ -29,10 +30,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
                 android:fontFamily="roboto-Light"
                 android:id="@+id/textview"
-
-                android:textSize="20dp"
+                android:textColor="@color/colorSecondary"
+                android:textSize="17dp"
                 android:padding="3dp"
                 ></TextView>
 

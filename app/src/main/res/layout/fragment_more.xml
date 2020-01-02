@@ -8,18 +8,37 @@
     android:clickable="true"
     android:layout_height="match_parent">
  <ImageView
-     android:layout_width="125dp"
-     android:layout_height="125dp"
+     android:layout_width="100dp"
+     android:layout_height="100dp"
      android:layout_marginTop="30dp"
      android:layout_gravity="center"
      android:src="@drawable/user"></ImageView>
 
     <ListView
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/list_view"
         android:headerDividersEnabled="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="36dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="90dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Version 1.0.0"
+            android:textColor="@color/colorPrimary"
+            />
+    </LinearLayout>
+
+
+
+
 </LinearLayout>
