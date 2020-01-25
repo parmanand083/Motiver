@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="350dp"
+    android:background="@color/colorSecondary"
+    android:padding="15dp"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/txtclose"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:textColor="@color/colorPrimary"
+        android:text="X"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="center"
+        />
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:text="Provide your valuable feedback."
+        android:textStyle="bold"
+        android:gravity="center"
+
+        />
+
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/data"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:ems="10"
+        android:background="@drawable/feedback"
+        android:gravity="start|top"
+        android:inputType="textMultiLine" />
+    <Button
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/send"
+        android:text="Send"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorSecondary"
+        >
+
+    </Button>
+
+
+</LinearLayout>

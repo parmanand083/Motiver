@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import in.motivation.R;
+import in.motivation.ui.dashboard.YoutubePlayer;
 
 
 public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.ViewHolder> {
@@ -143,25 +145,10 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.ViewHolder
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*
 
-                System.out.println("...................onclick............CAT");
-
-                Fragment calendarFragment = ((AppCompatActivity)context).getSupportFragmentManager().findFragmentById(R.id.navigation_dashboard);
-                if (calendarFragment != null)
-                {
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().remove(calendarFragment).commit();
-                }
-              //  Toast.makeText(context, names.get(position), Toast.LENGTH_SHORT).show();
-                Fragment newFragment = new VideoFragment(category_list.get(position).id);
-                 FragmentTransaction ft = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
-
-                ft.replace(R.id.nav_host_fragment,newFragment);
-             //   ft.add()
-               // ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack("Cat");
-                ft.commit();
-                */
+                Intent intent = new Intent(context, ImageViewer.class);
+                intent.putExtra("url",quotes_list.get(position).url);
+                context.startActivity(intent);
 
 
             }

@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -64,14 +69,14 @@
         android:textStyle="bold"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="20dp"
-        android:text="Quotes of the day"
+        android:text="Latest quotes"
 
         />
 
     <com.google.android.material.card.MaterialCardView
         android:clickable="true"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
         android:layout_marginTop="8dp"
 
@@ -88,7 +93,8 @@
                 app:fillColor="#FFFFFFFF"
                 app:pageColor="#00000000"
                 app:radius="6dp"
-                app:slideInterval="3000"
+
+                app:slideInterval="3500"
                 app:strokeColor="#FF777777"
                 app:strokeWidth="1dp"/>
             <TextView
@@ -104,12 +110,67 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/cardview_light_background"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:text="Latest videos"
+
+        />
+
+    <com.google.android.material.card.MaterialCardView
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/mtrl_card_spacing">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/carouselView1"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:fillColor="#FFFFFFFF"
+                app:pageColor="#00000000"
+                app:radius="6dp"
+                app:slideInterval="3000"
+                app:strokeColor="#FF777777"
+                app:strokeWidth="1dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto-Light"
+                android:id="@+id/textview1"
+                android:textSize="20dp"
+                android:padding="3dp"
+                ></TextView>
+        </LinearLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
     <com.google.android.material.card.MaterialCardView
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
         android:layout_marginTop="23dp"
+        android:layout_marginBottom="80dp"
 
 
         android:layout_marginRight="@dimen/mtrl_card_spacing">
@@ -138,3 +199,4 @@
     </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
+</ScrollView>

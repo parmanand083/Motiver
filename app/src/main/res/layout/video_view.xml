@@ -9,7 +9,7 @@
     <com.google.android.material.card.MaterialCardView
 
         android:layout_width="match_parent"
-        android:layout_height="310dp"
+        android:layout_height="350dp"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
         android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:layout_marginRight="@dimen/mtrl_card_spacing">
@@ -17,8 +17,49 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorSecondary"
             android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <agency.tango.android.avatarview.views.AvatarView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:av_border_color="@android:color/white"
+                    app:av_border_width="4dp"
+                    android:id="@+id/avatar"
+                    app:av_text_size_percentage="35">
+
+                </agency.tango.android.avatarview.views.AvatarView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="roboto-Light"
+                    android:id="@+id/interviewer_name"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="17dp"
+                    android:textFontWeight="500"
+                    android:padding="3dp"
+                    ></TextView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="roboto-Light"
+                android:id="@+id/textview"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17dp"
+                android:padding="3dp"
+                ></TextView>
+
             <ImageView
                 android:id="@+id/video_imageView"
                 android:adjustViewBounds="true"
@@ -27,19 +68,36 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/loader_image"
                 />
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:fontFamily="roboto-Light"
-                android:id="@+id/textview"
-                android:textColor="@color/colorSecondary"
-                android:textSize="17dp"
-                android:padding="3dp"
-                ></TextView>
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                  <ImageView
+                      android:layout_width="wrap_content"
+                      android:src="@drawable/views"
+                      android:minHeight="50dp"
+                      android:minWidth="50dp"
+                      android:layout_height="wrap_content">
+                   </ImageView>
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="200"
+                     android:textColor="@color/colorPrimary"
+                        ></TextView>
+
+            </LinearLayout>
+
+
+
+
+
+
 
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
 
 </LinearLayout>

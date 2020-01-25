@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,46 +77,57 @@ public class MoreFragment extends Fragment {
 
                 if(value=="Feedback")
                 {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
-                   // builder.setTitle("Feedback");
+                    final Dialog myDialog;
+                    myDialog = new Dialog(getContext());
+                    TextView txtclose;
+                    final EditText data;
+                    Button btn;
 
-               //    root = LayoutInflater.from(getContext()).inflate(R.layout.feedback, (ViewGroup) getView(), false);
-// Set up the input
-                    final EditText input = new EditText(getContext());
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                  //  input.setBackground(R.drawable.feedback);
-                    input.setBackgroundResource(R.drawable.feedback);
-                   // input.setText("\n\n");
-                    input.setHint("Write your views here ..");
-                    input.setHeight(350);
-                    input.setHintTextColor(getResources().getColor(R.color.dim_black));
-                   // builder.setView(input, (int)(19*dpi), (int)(5*dpi), (int)(14*dpi), (int)(5*dpi) )
-                    builder.setView(input);
+                    myDialog.setContentView(R.layout.popup_feedback);
+                    data=(EditText) myDialog.findViewById(R.id.data);
+                    btn=(Button)myDialog.findViewById(R.id.send);
+                    txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
+                   // txtclose.setText("X");
+                    String countryList[] = {"Feedback", "Contact us"};
 
-// Set up the buttons
-                    builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                      txtclose.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            m_Text = input.getText().toString();
+                        public void onClick(View v) {
+                            myDialog.dismiss();
+
+                        }
+                     });
+                    btn.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+
+                         //   Toast.makeText(getContext(),data.getText(), Toast.LENGTH_SHORT).show();
+
+                             if(data.getText().toString().length()==0)
+                             {
+                                 //Toast.makeText(getContext(),"Please write something",Toast.LENGTH_LONG).show();
+                                 Toast.makeText(getContext(),"Please write something", Toast.LENGTH_SHORT).show();
+                                 return;
+                                }
 
                             try {
                                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                                 String URL = "http://crazywork.in:5000/send/feedback";
                                 JSONObject jsonBody = new JSONObject();
-                                jsonBody.put("mesaage", m_Text);
+                                jsonBody.put("mesaage", data.getText());
                                 jsonBody.put("timestamp", new Date().getTime());
                                 final String requestBody = jsonBody.toString();
 
                                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
-                                        Toast.makeText(getContext(),"Feedback sent ", Toast.LENGTH_SHORT).show();
+                                        myDialog.dismiss();
+                                        Toast.makeText(getContext(), "Feedback sent ", Toast.LENGTH_SHORT).show();
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-                                        Toast.makeText(getContext(),"error,Please try after sometime", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), "error,Please try after sometime", Toast.LENGTH_SHORT).show();
                                     }
                                 }) {
                                     @Override
@@ -156,36 +168,25 @@ public class MoreFragment extends Fragment {
 
                         }
                     });
-
-
-
-                    builder.setNegativeButton("Later", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    builder.show();
+                    myDialog.show();
                 }
                 else if(value=="Contact us")
                 {
                     final Dialog myDialog;
                     myDialog = new Dialog(getContext());
                     TextView txtclose;
-
                     myDialog.setContentView(R.layout.popup_contact);
                     txtclose =(TextView) myDialog.findViewById(R.id.txtclose);
                     txtclose.setText("X");
                     String countryList[] = {"Feedback", "Contact us"};
-
-
                     txtclose.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             myDialog.dismiss();
                         }
                     });
+
+
                  //   myDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     myDialog.show();
                 }

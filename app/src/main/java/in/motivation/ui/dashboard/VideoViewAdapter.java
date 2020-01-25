@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.youtube.player.YouTubePlayer;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -34,7 +35,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+
+import agency.tango.android.avatarview.IImageLoader;
+import agency.tango.android.avatarview.loader.PicassoLoader;
+import agency.tango.android.avatarview.views.AvatarView;
 import in.motivation.R;
+import in.motivation.ui.util.DataHolder;
 
 public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.ViewHolder> {
     Context context;
@@ -45,6 +51,7 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     InputStream is = null;
     Bitmap bmImg = null;
     ProgressDialog progress=null;
+    IImageLoader imageLoader;
 
     public VideoViewAdapter(Context context, ArrayList<VideoList> video_list) {
         this.context = context;
@@ -66,6 +73,8 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
         TextView desc;
         ImageView imageView;
         LinearLayout layout;
+        AvatarView avatarView;
+        TextView interviewer_name;
 
 
 
@@ -73,6 +82,8 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
             super(itemview);
             imageView=(itemView.findViewById(R.id.video_imageView));
             desc=itemview.findViewById(R.id.textview);
+            interviewer_name=(TextView) itemview.findViewById(R.id.interviewer_name);
+            avatarView = (AvatarView)itemview.findViewById(R.id.avatar);
             layout=itemview.findViewById(R.id.video_parent);
             System.out.println("..............."+"Video view adapter"+"...............");
 
@@ -105,9 +116,12 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
         //info.pos=position;
       //  info.size=names.size()-1;
         progress.show();
-        System.out.println(video_list.get(position).thum_url);
+      //  System.out.println(video_list.get(position).thum_url);
         holder.desc.setText(video_list.get(position).title);
-
+        holder.interviewer_name.setText("Parmanand kumar");
+      //  imageLoader = new PicassoLoader();
+        Picasso.get().load(video_list.get(position).thum_url).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.avatarView);
+        //imageLoader.loadImage(holder.avatarView, "http:/example.com/user/someUserAvatar.png", "User Name");
         Picasso.get().load(video_list.get(position).thum_url).noPlaceholder().into(holder.imageView,new Callback()
         {
             @Override
@@ -131,56 +145,21 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
                                 System.exit(0);
                             }
                         });
-
-
-
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
-
-
             }
-
             @Override
             public void onSuccess() {
-              //  System.out.println("......................P.....................................   "+names.size());
                 progress.hide();
-                //  progress.dismiss();
-                //  progressbar.setVisibility(View.GONE);
             }});
 
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(context,YoutubePlayer.class);
-                String id = "IIclzX2dlzU";
-                intent.putExtra("id", id);
+                intent.putExtra("id",video_list.get(position).video_url);
                 context.startActivity(intent);
-
-
-//
-//               System.out.println("...................onclick............videoAd");
- /*
-
-                Fragment calendarFragment = ((AppCompatActivity)context).getSupportFragmentManager().findFragmentById(R.id.parent_layout);
-                if (calendarFragment != null)
-                {
-                 //   System.out.println("...................onclick............removing video_list");
-                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().remove(calendarFragment).commit();
-                }
-
-               // Toast.makeText(context, video_list.get(position), Toast.LENGTH_SHORT).show();
-
-
-
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                ft.addToBackStack("video");
-                ft.commit();
-                */
-
-
-
             }
         });
     }

@@ -2,23 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="in.motivation">
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        tools:replace="android:label"
         android:allowBackup="true"
         android:icon="@drawable/logoo"
         android:label="Motiver"
         android:roundIcon="@drawable/logoo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:label">
+        <activity android:name=".ui.Quotes.ImageViewer"  android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Motiver"
-
             android:theme="@style/Theme.Design.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,10 +31,12 @@
             android:name=".ui.dashboard.YoutubePlayer"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
-        <activity
-
-            android:name=".MainActivity"
-             />
+        <activity android:name=".MainActivity" />
+        <service
+            android:name=".ui.Quotes.DownloadService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
+
 
 </manifest>
