@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="in.motivation">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,7 +16,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
-        <activity android:name=".ui.Quotes.ImageViewer"  android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
+        <activity
+            android:name=".ui.dashboard.ProfileViwer"
+            android:label="@string/title_activity_profile_viwer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.Quotes.ImageViewer"
+            android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity
             android:name=".FullscreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -32,11 +39,11 @@
             android:screenOrientation="landscape"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <activity android:name=".MainActivity" />
+
         <service
             android:name=".ui.Quotes.DownloadService"
             android:enabled="true"
             android:exported="false" />
     </application>
-
 
 </manifest>

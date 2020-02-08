@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="350dp"
-    android:layout_height="475dp"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
     android:background="@color/colorSecondary"
     android:padding="15dp"
     android:layout_gravity="center">
@@ -18,12 +18,12 @@
         android:gravity="center"
         />
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:src="@drawable/contact"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         />
 
        <LinearLayout
@@ -31,32 +31,28 @@
            android:layout_height="wrap_content"
            android:paddingBottom="5dp"
            android:paddingTop="5dp"
+           android:showDividers="middle"
+           android:divider="@drawable/empty_tall_divider"
+
            android:orientation="horizontal">
            <ImageView
-               android:layout_width="50dp"
-               android:layout_height="50dp"
+               android:layout_width="30dp"
+               android:layout_height="30dp"
                android:src="@drawable/icon_whatsapp"
                android:layout_gravity="center"
                android:gravity="center"
                />
            <TextView
                android:layout_width="wrap_content"
-               android:textSize="20dp"
-               android:paddingTop="12dp"
-               android:paddingLeft="12dp"
-
+               android:textSize="15dp"
+               android:paddingTop="5dp"
+               android:paddingLeft="10dp"
                android:layout_height="wrap_content" android:text="+91-9663453871">
-
            </TextView>
 
 
        </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:background="@color/dim_black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,29 +61,24 @@
         android:paddingTop="5dp"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/icon_email"
             android:layout_gravity="center"
             android:gravity="center"
             />
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="20dp"
-            android:paddingTop="12dp"
+            android:textSize="15dp"
+            android:paddingTop="5dp"
             android:paddingLeft="12dp"
-            android:layout_height="wrap_content" android:text="crazywork19@gmail.com">
+            android:layout_height="wrap_content" android:text="contact@motiver.in">
 
         </TextView>>
 
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-
-        android:background="@color/dim_black"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,18 +87,19 @@
         android:paddingTop="5dp"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/icon_call"
             android:layout_gravity="center"
             android:gravity="center"
             />
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="20dp"
-            android:paddingTop="12dp"
+            android:textSize="15dp"
+            android:paddingTop="5dp"
             android:paddingLeft="12dp"
-            android:layout_height="wrap_content" android:text="+91-9663453871">
+            android:layout_height="wrap_content"
+            android:text="+91-6200672234">
 
         </TextView>>
 

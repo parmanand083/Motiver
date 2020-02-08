@@ -5,4 +5,5 @@
     <color name="colorPrimary">#FF424242</color>
     <color name="dim_black">#808080</color>
     <color name="black_overlay">#66000000</color>
+    <color name="logo_color">#0676BE</color>
 </resources>

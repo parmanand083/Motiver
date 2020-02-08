@@ -24,27 +24,54 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
                 <agency.tango.android.avatarview.views.AvatarView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="53dp"
+                    android:layout_height="53dp"
                     app:av_border_color="@android:color/white"
                     app:av_border_width="4dp"
                     android:id="@+id/avatar"
                     app:av_text_size_percentage="35">
-
                 </agency.tango.android.avatarview.views.AvatarView>
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="6dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginBottom="10dp"
                     android:fontFamily="roboto-Light"
-                    android:id="@+id/interviewer_name"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="17dp"
+                    android:id="@+id/talent_name"
+                    android:textColor="@color/logo_color"
+                    android:textSize="16dp"
                     android:textFontWeight="500"
-                    android:padding="3dp"
+
                     ></TextView>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="roboto-Light"
+                        android:id="@+id/profession"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="13dp"
+                        android:textFontWeight="400"
+                        android:text="Engineer"
+                        ></TextView>
+                </LinearLayout>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:paddingTop="6dp"
+                    android:id="@+id/share"
+                    android:src="@drawable/share_final"
+                    android:layout_gravity="end"
+                    android:minWidth="50dp">
+
+                </ImageView>
+
             </LinearLayout>
 
             <TextView
@@ -56,7 +83,7 @@
                 android:fontFamily="roboto-Light"
                 android:id="@+id/textview"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17dp"
+                android:textSize="16dp"
                 android:padding="3dp"
                 ></TextView>
 
@@ -72,18 +99,11 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
-                  <ImageView
-                      android:layout_width="wrap_content"
-                      android:src="@drawable/views"
-                      android:minHeight="50dp"
-                      android:minWidth="50dp"
-                      android:layout_height="wrap_content">
-                   </ImageView>
 
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:text="200"
+                     android:text="Views: 200 , uploaded 6 days ago"
                      android:textColor="@color/colorPrimary"
                         ></TextView>
 

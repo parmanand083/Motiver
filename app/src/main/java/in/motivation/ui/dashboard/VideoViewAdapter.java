@@ -6,12 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,32 +16,24 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.youtube.player.YouTubePlayer;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
 import agency.tango.android.avatarview.IImageLoader;
-import agency.tango.android.avatarview.loader.PicassoLoader;
 import agency.tango.android.avatarview.views.AvatarView;
+import in.motivation.BuildConfig;
 import in.motivation.R;
-import in.motivation.ui.util.DataHolder;
 
 public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.ViewHolder> {
     Context context;
-    ArrayList<VideoList> video_list;
+    ArrayList<Video> video_list;
     int progresscout=0;
 
     URL ImageUrl = null;
@@ -53,7 +42,7 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     ProgressDialog progress=null;
     IImageLoader imageLoader;
 
-    public VideoViewAdapter(Context context, ArrayList<VideoList> video_list) {
+    public VideoViewAdapter(Context context, ArrayList<Video> video_list) {
         this.context = context;
         this.video_list = video_list;
 
@@ -67,6 +56,7 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     }
 
 
+
     public class  ViewHolder extends RecyclerView.ViewHolder
     {
 
@@ -74,15 +64,16 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
         ImageView imageView;
         LinearLayout layout;
         AvatarView avatarView;
-        TextView interviewer_name;
-
-
+        TextView talent_name;
+        ImageView share;
 
         public ViewHolder(View itemview ){
             super(itemview);
             imageView=(itemView.findViewById(R.id.video_imageView));
+
             desc=itemview.findViewById(R.id.textview);
-            interviewer_name=(TextView) itemview.findViewById(R.id.interviewer_name);
+            share=itemview.findViewById(R.id.share);
+            talent_name=(TextView) itemview.findViewById(R.id.talent_name);
             avatarView = (AvatarView)itemview.findViewById(R.id.avatar);
             layout=itemview.findViewById(R.id.video_parent);
             System.out.println("..............."+"Video view adapter"+"...............");
@@ -93,6 +84,7 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
 
 
     }
+
 
     @NonNull
     @Override
@@ -117,12 +109,12 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
       //  info.size=names.size()-1;
         progress.show();
       //  System.out.println(video_list.get(position).thum_url);
-        holder.desc.setText(video_list.get(position).title);
-        holder.interviewer_name.setText("Parmanand kumar");
+        holder.desc.setText(video_list.get(position).getTitle());
+        holder.talent_name.setText(video_list.get(position).getTalent_name());
       //  imageLoader = new PicassoLoader();
-        Picasso.get().load(video_list.get(position).thum_url).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.avatarView);
+        Picasso.get().load(video_list.get(position).getTalent_pic()).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.avatarView);
         //imageLoader.loadImage(holder.avatarView, "http:/example.com/user/someUserAvatar.png", "User Name");
-        Picasso.get().load(video_list.get(position).thum_url).noPlaceholder().into(holder.imageView,new Callback()
+        Picasso.get().load(video_list.get(position).getThum_url()).noPlaceholder().into(holder.imageView,new Callback()
         {
             @Override
             public void onError(Exception e) {
@@ -152,13 +144,52 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
             public void onSuccess() {
                 progress.hide();
             }});
+        holder.share.setOnClickListener(new View.OnClickListener(){
 
-
-        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try {
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                    String shareMessage= "\nWatch motivational videos using this app.\nClick here to install:\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=in.motivation";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                   context.startActivity(Intent.createChooser(shareIntent, "choose one"));
+                } catch(Exception e) {
+                    //e.toString();
+                }
+                //   Intent intent = new Intent(context,YoutubePlayer.class);
+             //   intent.putExtra("id",video_list.get(position).getVideo_url());
+               // context.startActivity(intent);
+
+              //  Toast.makeText(context,"HIIIII",Toast.LENGTH_SHORT);
+            }
+        });
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
                 Intent intent = new Intent(context,YoutubePlayer.class);
-                intent.putExtra("id",video_list.get(position).video_url);
+                intent.putExtra("id",video_list.get(position).getVideo_url());
+                context.startActivity(intent);
+            }
+        });
+        holder.avatarView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,ProfileViwer.class);
+                intent.putExtra("id",video_list.get(position).getTalent_id());
+                context.startActivity(intent);
+            }
+        });
+        holder.talent_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,ProfileViwer.class);
+                intent.putExtra("id",video_list.get(position).getTalent_id());
                 context.startActivity(intent);
             }
         });

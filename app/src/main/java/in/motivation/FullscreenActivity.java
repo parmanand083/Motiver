@@ -1,15 +1,9 @@
 package in.motivation;
 
-import android.annotation.SuppressLint;
-
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,10 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-import in.motivation.ui.dashboard.VideoList;
-import in.motivation.ui.home.HomeFragment;
+import in.motivation.ui.dashboard.Video;
 import in.motivation.ui.util.DataHolder;
 import in.motivation.ui.util.ErrorDialog;
 
@@ -53,11 +44,11 @@ public class FullscreenActivity extends AppCompatActivity {
                         try {
 
                             JSONArray array=(JSONArray)response.get("data");
-                            VideoList list=null;
+                            Video list=null;
 
 
                             for (int i = 0; i < array.length(); i++) {
-                                list=new VideoList();
+                                list=new Video();
                                 try {
 
                                     JSONObject jsonObject = array.getJSONObject(i);

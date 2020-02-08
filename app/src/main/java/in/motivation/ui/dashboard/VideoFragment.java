@@ -25,7 +25,7 @@ import in.motivation.R;
 public class VideoFragment extends Fragment {
 
     ProgressDialog progress=null;
-    ArrayList<VideoList> video_list=new ArrayList();
+    ArrayList<Video> video_list=new ArrayList();
     VideoViewAdapter adapter=null;
     Integer video_id=null;
 
@@ -76,10 +76,10 @@ public class VideoFragment extends Fragment {
 
 
                             JSONArray array=(JSONArray)response.get("data");
-                            VideoList list=null;
+                            Video list=null;
 
                             for (int i = 0; i < array.length(); i++) {
-                                list=new VideoList();
+                                list=new Video();
                                 try {
 
                                     JSONObject jsonObject = array.getJSONObject(i);
@@ -88,6 +88,10 @@ public class VideoFragment extends Fragment {
                                     list.setThum_url(jsonObject.get("thumb_url").toString());
                                     list.setVideo_url(jsonObject.get("video_url").toString());
                                     list.setTitle(jsonObject.get("video_title").toString());
+                                    list.setTalent_name(jsonObject.get("name").toString());
+                                    list.setTalent_pic(jsonObject.getString("pic"));
+                                    list.setTalent_id(jsonObject.get("talent_id").toString());
+
                                     video_list.add(list);
                                 }catch (Exception e)
                                 {
