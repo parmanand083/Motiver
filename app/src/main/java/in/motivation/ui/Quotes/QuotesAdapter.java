@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,21 +22,24 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import in.motivation.R;
+import in.motivation.model.Quote;
 import in.motivation.ui.dashboard.YoutubePlayer;
+import in.motivation.util.Constant;
+import in.motivation.util.ErrorDialog;
 
 
 public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.ViewHolder> {
 
 
     Context context;
-    ArrayList<QuotesList> quotes_list=null;
+    ArrayList<Quote> quotes_list=null;
     ProgressDialog progress=null;
 
-    public QuotesAdapter(Context context, ArrayList<QuotesList> quotes_list) {
+    public QuotesAdapter(Context context, ArrayList<Quote> quotes_list) {
         this.context = context;
         this.quotes_list=quotes_list;
         progress = new ProgressDialog(context);
-        progress.setMessage("Please wait....");
+        progress.setMessage(Constant.MSG_LOADING);
         progress.setIndeterminate(false);
         progress.setCancelable(true);
 
@@ -82,72 +84,29 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-       // holder.image_name.setText(names.get(position));
-        //imageView.setImageResource(R.drawable.exam)
-
-        Listinfo info =new Listinfo();
-        info.url=quotes_list.get(position).url;
-        info.view=holder;
-        info.pos=position;
-        info.size=quotes_list.size()-1;
         progress.show();
-        //System.
-
-        Picasso.get().load(quotes_list.get(position).url).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.cat_imageView,new Callback()
+        Picasso.get().load(quotes_list.get(position).getUrl()).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.cat_imageView,new Callback()
         {
             @Override
             public void onError(Exception e) {
                 progress.hide();
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(context,R.style.MyDialogTheme);
-                builder1.setMessage("Unable to load ...Check your internet connection");
-                builder1.setCancelable(true);
-                builder1.setNegativeButton(
-                        "Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                        builder1.setPositiveButton(
-                        "Exit",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                ((Activity)context).finish();
-                                System.exit(0);
-                            }
-                        });
-
-
-
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
-
-
+                ErrorDialog error=new ErrorDialog(Constant.API_ERROR_MSG,context);
+                error.showLoader();
             }
 
             @Override
             public void onSuccess() {
-             //   System.out.println("......................P.....................................   "+names.size());
+
                 progress.hide();
-              //  progress.dismiss();
-              //  progressbar.setVisibility(View.GONE);
             }});
-       //  new AsyncTaskExample(info).execute();
-
-
-     //   obj[0]=asyncTask;
-     //   obj.add(asyncTask);
-       // obj.get(0).execute(names.get(position));
-       // AsyncTaskExample asyncTask=new AsyncTaskExample();
-      //  asyncTask.execute(names.get(position));
-
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(context, ImageViewer.class);
-                intent.putExtra("url",quotes_list.get(position).url);
+                intent.putExtra("url",quotes_list.get(position).getUrl());
+                intent.putExtra("id",quotes_list.get(position).getId());
                 context.startActivity(intent);
 
 
@@ -159,19 +118,6 @@ public class QuotesAdapter extends RecyclerView.Adapter<QuotesAdapter.ViewHolder
     public int getItemCount() {
 
         return quotes_list.size();
-    }
-
-
-
-
-    class Listinfo{
-
-
-        public  ViewHolder view;
-        public  int pos;
-        public  String url;
-        public  int size;
-
     }
 }
 

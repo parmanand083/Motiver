@@ -21,6 +21,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import in.motivation.R;
+import in.motivation.model.Video;
+import in.motivation.util.Constant;
+import in.motivation.util.ErrorDialog;
 
 public class VideoFragment extends Fragment {
 
@@ -28,20 +31,14 @@ public class VideoFragment extends Fragment {
     ArrayList<Video> video_list=new ArrayList();
     VideoViewAdapter adapter=null;
     Integer video_id=null;
-
-
     VideoFragment(Integer  video_id){
         this.video_id=video_id;
     }
-
-
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
         progress=new ProgressDialog(getContext());
-        progress.setMessage("Please wait....");
+        progress.setMessage(Constant.MSG_LOADING);
         progress.setIndeterminate(false);
         progress.setCancelable(true);
         progress.show();
@@ -49,39 +46,24 @@ public class VideoFragment extends Fragment {
         System.out.println(".........Video_Fragment...........");
 
         View root = inflater.inflate(R.layout.video_fragment, container, false);
-
-        //Log.d(TAG, "initRecyclerView: init recyclerview.");
         RecyclerView recyclerView = root.findViewById(R.id.video_recycleview);
-
         adapter = new VideoViewAdapter(getContext(),video_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         return root;
     }
 
     private void getData() {
-        //   final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        // progressDialog.setMessage("Loading...");
-        //progressDialog.show();
-       // String url="http://crazywork.in:4000/project/"+6200672234+"/submitted";
-       // System.out.println(clicked);
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://crazywork.in:5000/videos/cat_id/"+this.video_id, null, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, Constant.API_GET_VIDEOS+this.video_id, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
-
                             JSONArray array=(JSONArray)response.get("data");
                             Video list=null;
-
                             for (int i = 0; i < array.length(); i++) {
                                 list=new Video();
                                 try {
-
                                     JSONObject jsonObject = array.getJSONObject(i);
                                     list.setVideo_id(Integer.parseInt(jsonObject.get("video_id").toString()));
                                     list.setCat_id(Integer.parseInt(jsonObject.get("cat_id").toString()));
@@ -91,6 +73,9 @@ public class VideoFragment extends Fragment {
                                     list.setTalent_name(jsonObject.get("name").toString());
                                     list.setTalent_pic(jsonObject.getString("pic"));
                                     list.setTalent_id(jsonObject.get("talent_id").toString());
+                                    list.setProfession(jsonObject.get("profession").toString());
+                                    list.setViewscount(jsonObject.get("viewCount").toString());
+                                    list.setTimestamp(jsonObject.get("timestamp").toString());
 
                                     video_list.add(list);
                                 }catch (Exception e)
@@ -102,46 +87,18 @@ public class VideoFragment extends Fragment {
                             progress.hide();
                             adapter.notifyDataSetChanged();
 
-
-
                         } catch (JSONException e) {
 
                             e.printStackTrace();
                         }
-
-                        //    System.out.println("..............................................."+response.toString());
-                        // adapter.notifyDataSetChanged();
-                        //   progressDialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progress.hide();
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
-                        builder1.setMessage("Unable to load ...Check your internet connection");
-                        builder1.setCancelable(true);
-                        builder1.setNegativeButton(
-                                "Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        builder1.setPositiveButton(
-                                "Exit",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        getActivity().finish();
-                                        System.exit(0);
-                                    }
-                                });
+                        progress.dismiss();
+                        ErrorDialog errorDialog=new ErrorDialog(Constant.API_ERROR_MSG,getContext());
+                        errorDialog.showLoader();
 
-
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
-                        System.out.println( error.toString());
-                        // progressDialog.dismiss();
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());

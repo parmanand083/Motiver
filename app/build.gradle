@@ -10,8 +10,8 @@ android {
         applicationId "in.motivation"
         minSdkVersion 17
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -40,7 +40,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.0-alpha05'
     testImplementation 'junit:junit:4.12'
-     implementation 'com.uncopt:android.justified:1.0'
+
     implementation 'com.synnapps:carouselview:0.1.5'
     implementation 'agency.tango.android:avatar-view:0.0.2'
     //if you want to use Picasso for loadi

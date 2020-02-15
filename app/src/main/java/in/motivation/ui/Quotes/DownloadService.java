@@ -1,6 +1,4 @@
 package in.motivation.ui.Quotes;
-
-
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
@@ -37,9 +35,11 @@ public  class DownloadService extends IntentService {
         startDownload(downloadPath);
     }
     private void startDownload(String downloadPath) {
-        Uri uri = Uri.parse(downloadPath); // Path where you want to download file.
+        Uri uri = Uri.parse(downloadPath);
+       // System.out.println(""+uri);
+        // Path where you want to download file.
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Motiver-quotes");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "MotiverBab");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); // to notify when download is complete
         request.allowScanningByMediaScanner();// if you want to be available from media players
         DownloadManager manager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);

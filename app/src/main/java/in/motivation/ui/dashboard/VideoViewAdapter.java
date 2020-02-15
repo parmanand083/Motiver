@@ -6,13 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -28,8 +28,10 @@ import java.util.ArrayList;
 
 import agency.tango.android.avatarview.IImageLoader;
 import agency.tango.android.avatarview.views.AvatarView;
-import in.motivation.BuildConfig;
 import in.motivation.R;
+import in.motivation.model.Video;
+import in.motivation.util.Constant;
+import in.motivation.util.ErrorDialog;
 
 public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.ViewHolder> {
     Context context;
@@ -45,13 +47,12 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     public VideoViewAdapter(Context context, ArrayList<Video> video_list) {
         this.context = context;
         this.video_list = video_list;
-
         progress = new ProgressDialog(context);
-        progress.setMessage("Please wait....");
+        progress.setMessage(Constant.MSG_LOADING);
         progress.setIndeterminate(false);
         progress.setIndeterminate(false);
         progress.setCancelable(true);
-        //   progress.show();
+
 
     }
 
@@ -60,21 +61,24 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     public class  ViewHolder extends RecyclerView.ViewHolder
     {
 
-        TextView desc;
+        TextView desc,profession,views,timestamp;
         ImageView imageView;
         LinearLayout layout;
         AvatarView avatarView;
         TextView talent_name;
         ImageView share;
 
+
         public ViewHolder(View itemview ){
             super(itemview);
             imageView=(itemView.findViewById(R.id.video_imageView));
-
             desc=itemview.findViewById(R.id.textview);
+            profession=itemview.findViewById(R.id.profession);
             share=itemview.findViewById(R.id.share);
-            talent_name=(TextView) itemview.findViewById(R.id.talent_name);
-            avatarView = (AvatarView)itemview.findViewById(R.id.avatar);
+            talent_name=itemview.findViewById(R.id.talent_name);
+            views=itemview.findViewById(R.id.views);
+            timestamp=itemview.findViewById(R.id.timestamp);
+            avatarView =itemview.findViewById(R.id.avatar);
             layout=itemview.findViewById(R.id.video_parent);
             System.out.println("..............."+"Video view adapter"+"...............");
 
@@ -99,52 +103,29 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-        // holder.image_name.setText(names.get(position));
-        //imageView.setImageResource(R.drawable.exam)
-
-        ///Listinfo info =new Listinfo();
-        //info.url=names.get(position);
-        //info.view=holder;
-        //info.pos=position;
-      //  info.size=names.size()-1;
         progress.show();
-      //  System.out.println(video_list.get(position).thum_url);
         holder.desc.setText(video_list.get(position).getTitle());
         holder.talent_name.setText(video_list.get(position).getTalent_name());
-      //  imageLoader = new PicassoLoader();
+        holder.profession.setText(video_list.get(position).getProfession());
+        String totalViews = "Views- " + video_list.get(position).getViewscount();
+        holder.views.setText(Html.fromHtml(totalViews));
+        String uplaodTime = ", Uploaded " + video_list.get(position).getTimestamp();
+        holder.timestamp.setText(Html.fromHtml(uplaodTime));
         Picasso.get().load(video_list.get(position).getTalent_pic()).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(holder.avatarView);
-        //imageLoader.loadImage(holder.avatarView, "http:/example.com/user/someUserAvatar.png", "User Name");
         Picasso.get().load(video_list.get(position).getThum_url()).noPlaceholder().into(holder.imageView,new Callback()
         {
             @Override
             public void onError(Exception e) {
-                progress.hide();
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(context,R.style.MyDialogTheme);
-                builder1.setMessage("Unable to load ...Check your internet connection");
-                builder1.setCancelable(true);
-                builder1.setNegativeButton(
-                        "Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                builder1.setPositiveButton(
-                        "Exit",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                ((Activity)context).finish();
-                                System.exit(0);
-                            }
-                        });
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
+                progress.dismiss();
+                ErrorDialog errorDialog=new ErrorDialog(Constant.API_ERROR_MSG,context);
+                errorDialog.showLoader();
+
             }
             @Override
             public void onSuccess() {
                 progress.hide();
             }});
-        holder.share.setOnClickListener(new View.OnClickListener(){
+            holder.share.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
@@ -152,19 +133,14 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Motiver");
                     String shareMessage= "\nWatch motivational videos using this app.\nClick here to install:\n";
                     shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=in.motivation";
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                    context.startActivity(Intent.createChooser(shareIntent, "choose one"));
                 } catch(Exception e) {
-                    //e.toString();
+                   System.out.println(e);
                 }
-                //   Intent intent = new Intent(context,YoutubePlayer.class);
-             //   intent.putExtra("id",video_list.get(position).getVideo_url());
-               // context.startActivity(intent);
-
-              //  Toast.makeText(context,"HIIIII",Toast.LENGTH_SHORT);
             }
         });
 
@@ -198,19 +174,6 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
     @Override
     public int getItemCount() {
         return video_list.size();
-    }
-
-
-
-
-    class Listinfo{
-
-
-        public  ViewHolder view;
-        public  int pos;
-        public  String url;
-        public  int size;
-
     }
 }
 

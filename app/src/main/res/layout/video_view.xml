@@ -9,7 +9,7 @@
     <com.google.android.material.card.MaterialCardView
 
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="355dp"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
         android:layout_marginTop="@dimen/mtrl_card_spacing"
         android:layout_marginRight="@dimen/mtrl_card_spacing">
@@ -58,7 +58,7 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="13dp"
                         android:textFontWeight="400"
-                        android:text="Engineer"
+                        android:text="NA"
                         ></TextView>
                 </LinearLayout>
                 <ImageView
@@ -98,14 +98,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                
+                android:layout_marginTop="2dp"
                 android:layout_height="wrap_content">
 
                  <TextView
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:text="Views: 200 , uploaded 6 days ago"
+                     android:id="@+id/views"
+                     android:text="Views: 200"
                      android:textColor="@color/colorPrimary"
                         ></TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/timestamp"
+                    android:text="Views: 200"
+                    android:textColor="@color/colorPrimary"
+                    ></TextView>
+
 
             </LinearLayout>
 

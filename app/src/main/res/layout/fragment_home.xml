@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:background="@color/colorSecondary"
     android:layout_height="match_parent"
-    android:paddingTop="40dp"
+    android:paddingTop="30dp"
     android:paddingLeft="5dp"
     android:clickable="true"
 >
@@ -38,7 +38,7 @@
             android:background="@color/cardview_light_background"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="Learners!"
+            android:text="User !"
             android:clickable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
 
 
             <TextView
-                android:id="@+id/text"
+                android:id="@+id/textTagline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

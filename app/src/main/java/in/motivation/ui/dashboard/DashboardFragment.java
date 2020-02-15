@@ -1,19 +1,12 @@
 package in.motivation.ui.dashboard;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +15,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -33,9 +25,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.motivation.R;
-import in.motivation.ui.util.ErrorDialog;
-
-import static com.android.volley.VolleyLog.TAG;
+import in.motivation.util.Constant;
+import in.motivation.util.ErrorDialog;
 
 
 class CategoryList{
@@ -79,33 +70,24 @@ public class DashboardFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState)
     {
         progress=new ProgressDialog(getContext());
-        progress.setMessage("Please wait....");
+        progress.setMessage(Constant.MSG_LOADING);
         progress.setIndeterminate(false);
         progress.setCancelable(true);
         progress.show();
+        //call API
         getData();
-
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-
-
-      // Log.d(TAG, "initRecyclerView: init recyclerview.");
-      RecyclerView recyclerView = root.findViewById(R.id.recycleview);
-
-         adapter = new CategoryAdapter(getContext(), category_list);
+        RecyclerView recyclerView = root.findViewById(R.id.recycleview);
+        adapter = new CategoryAdapter(getContext(), category_list);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         return root;
     }
 
     private void getData() {
-     //   final ProgressDialog progressDialog = new ProgressDialog(getContext());
-       // progressDialog.setMessage("Loading...");
-        //progressDialog.show();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://crazywork.in:5000/category/all", null, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, Constant.API_GET_CAT, null, new Response.Listener<JSONObject>() {
         @Override
             public void onResponse(JSONObject response) {
             try {
@@ -143,7 +125,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progress.hide();
-                ErrorDialog errorDialog=new ErrorDialog("Unable to access category list.Please try after sometime",getContext());
+                ErrorDialog errorDialog=new ErrorDialog(Constant.API_ERROR_MSG,getContext());
                 errorDialog.showLoader();
             }
 

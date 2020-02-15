@@ -28,68 +28,51 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import in.motivation.R;
-
+import in.motivation.model.Quote;
+import in.motivation.util.Constant;
+import in.motivation.util.ErrorDialog;
 
 
 public class QuotesFragment extends Fragment {
 
- //   private NotificationsViewModel notificationsViewModel;
-
     Context context;
-    ArrayList<QuotesList> quotes_list=new ArrayList();
+    ArrayList<Quote> quotes_list=new ArrayList();
     ProgressDialog progress=null;
     QuotesAdapter adapter=null;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         progress=new ProgressDialog(getContext());
-        progress.setMessage("Please wait....");
+        progress.setMessage(Constant.MSG_LOADING);
         progress.setIndeterminate(false);
         progress.setCancelable(true);
         progress.show();
         getData();
 
         View root = inflater.inflate(R.layout.quotes_fragment, container, false);
-
-
-        // Log.d(TAG, "initRecyclerView: init recyclerview.");
-      RecyclerView recyclerView = root.findViewById(R.id.quotes_recycleview);
-
-       adapter = new QuotesAdapter(getContext(), quotes_list);
+        RecyclerView recyclerView = root.findViewById(R.id.quotes_recycleview);
+        adapter = new QuotesAdapter(getContext(), quotes_list);
         recyclerView.setAdapter(adapter);
-       // recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
         return root;
     }
 
     private void getData() {
-        //   final ProgressDialog progressDialog = new ProgressDialog(getContext());
-        // progressDialog.setMessage("Loading...");
-        //progressDialog.show();
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, "http://crazywork.in:5000/quotes/all", null, new Response.Listener<JSONObject>() {
+                (Request.Method.GET, Constant.API_GET_QUOTES, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-
                             JSONArray array=(JSONArray)response.get("data");
-
-                            QuotesList list=null;
+                            Quote list=null;
                             for (int i = 0; i < array.length(); i++) {
-                                list=new QuotesList();
+                                list=new Quote();
                                 try {
                                     JSONObject jsonObject = array.getJSONObject(i);
                                     list.setId(Integer.parseInt(jsonObject.get("quotes_id").toString()));
                                     list.setLang(jsonObject.get("language").toString());
                                     list.setUrl(jsonObject.get("quotes_path").toString());
-                                    System.out.println("..........................."+ jsonObject.get("quotes_path").toString());
-                                    //  names.add(jsonObject.get("desc").toString());
                                     quotes_list.add(list);
-
 
                                 }catch (Exception e)
                                 {
@@ -99,47 +82,22 @@ public class QuotesFragment extends Fragment {
                             }
                             progress.hide();
                             System.out.println("..........................."+ quotes_list.toString());
-
-                                adapter.notifyDataSetChanged();
-
-
+                            adapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
 
                             e.printStackTrace();
                         }
 
-                        //    System.out.println("..............................................."+response.toString());
-                        // adapter.notifyDataSetChanged();
-                        //   progressDialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.hide();
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
-                        builder1.setMessage("Unable to load ...Check your internet connection");
-                        builder1.setCancelable(true);
-                        builder1.setNegativeButton(
-                                "Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        builder1.setPositiveButton(
-                                "Exit",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        getActivity().finish();
-                                        System.exit(0);
-                                    }
-                                });
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
+                        ErrorDialog errormsg=new ErrorDialog(Constant.API_ERROR_MSG,getContext());
+                        errormsg.showLoader();
                         System.out.println( error.toString());
-                        // progressDialog.dismiss();
+
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
@@ -151,37 +109,3 @@ public class QuotesFragment extends Fragment {
 
 }
 
-
-
-class QuotesList{
-    int id;
-    String lang;
-    String url;
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
-        this.lang = lang;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-
-
-    public String getUrl() {
-        return url;
-    }
-}

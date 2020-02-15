@@ -1,5 +1,6 @@
 package in.motivation.ui.dashboard;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import com.android.volley.Request;
@@ -21,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import in.motivation.R;
+import in.motivation.util.Constant;
+import in.motivation.util.ErrorDialog;
 
 import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 /*
@@ -52,7 +55,7 @@ public class ProfileViwer extends AppCompatActivity {
          currentDesigntion=findViewById(R.id.currentDesigntion);
          age=findViewById(R.id.age);
          progressDialog=new ProgressDialog(ProfileViwer.this);
-        progressDialog.setMessage("Please wait....");
+        progressDialog.setMessage(Constant.MSG_LOADING);
         progressDialog.setIndeterminate(false);
         progressDialog.setCancelable(true);
         progressDialog.show();
@@ -96,27 +99,26 @@ public class ProfileViwer extends AppCompatActivity {
 
                                     JSONObject jsonObject = array.getJSONObject(i);
                                     String currentAchivementsText=" <b ><font color=#0676BE>Achivements: </font></b><br>";
-                                    for (int j = 0; j < jsonObject.getJSONArray("Achivements").length(); j++){
-                                        String achivement = jsonObject.getJSONArray("Achivements").getString(j);
+                                    for (int j = 0; j < jsonObject.getJSONArray("achivements").length(); j++){
+                                        String achivement = jsonObject.getJSONArray("achivements").getString(j);
                                         int index=j+1;
                                         currentAchivementsText = currentAchivementsText+"<b>"+index+".</b> "+achivement+"<br>";
                                     }
 
 
                                     achivements.setText(Html.fromHtml(currentAchivementsText));
-
-                                    String currentDesignationText = "<b > <font color=#0676BE>Designation: </font></b>" + jsonObject.get("Current Status").toString();
+                                    String currentDesignationText = "<b > <font color=#0676BE>Designation: </font></b>" + jsonObject.get("current_status").toString();
                                     currentDesigntion.setText(Html.fromHtml(currentDesignationText));
-                                    t_name.setText(jsonObject.getString("Name"));
-                                    age.setText(jsonObject.getString("Age"));
-                                    String nativePlaceText = "<b > <font color=#0676BE>Native Place: </font></b>" + jsonObject.get("Native").toString();
+                                    t_name.setText(jsonObject.getString("name"));
+                                    age.setText(jsonObject.getString("age"));
+                                    String nativePlaceText = "<b > <font color=#0676BE>Native Place: </font></b>" + jsonObject.get("native").toString();
                                     nativePlace.setText(Html.fromHtml(nativePlaceText));
-                                    String fev_quote = "<b > <font color=#0676BE>Fev. Quote: </font></b>" + jsonObject.get("Quotes").toString();
+                                    String fev_quote = "<b > <font color=#0676BE>Fev. Quote: </font></b>" + jsonObject.get("quotes").toString();
                                     fevQuote.setText(Html.fromHtml(fev_quote));
-                                    String aboutText = "<b > <font color=#0676BE>About: </font></b>" + jsonObject.get("About").toString();
+                                    String aboutText = "<b > <font color=#0676BE>About: </font></b>" + jsonObject.get("about").toString();
                                    // mytextview.setText(Html.fromHtml(sourceString));
                                     about.setText(Html.fromHtml(aboutText));
-                                    String hqText = "<b > <font color=#0676BE>Higest Qualification: </font></b>" + jsonObject.get("Higest Qualification").toString();
+                                    String hqText = "<b > <font color=#0676BE>Higest Qualification: </font></b>" + jsonObject.get("higest_qualification").toString();
                                     hq.setText(Html.fromHtml(hqText));
                                     Picasso.get().load(jsonObject.get("pic").toString()).noPlaceholder().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profileImage);
                                     progressDialog.dismiss();
@@ -129,12 +131,13 @@ public class ProfileViwer extends AppCompatActivity {
                             }
 
 
-                        //    progress.hide();
+                        //
                       //      adapter.notifyDataSetChanged();
 
 
 
                         } catch (JSONException e) {
+
 
                             e.printStackTrace();
                         }
@@ -145,35 +148,12 @@ public class ProfileViwer extends AppCompatActivity {
                     }
                 }, new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        /*
-                        progress.hide();
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme);
-                        builder1.setMessage("Unable to load ...Check your internet connection");
-                        builder1.setCancelable(true);
-                        builder1.setNegativeButton(
-                                "Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        builder1.setPositiveButton(
-                                "Exit",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        getActivity().finish();
-                                        System.exit(0);
-                                    }
-                                });
+                    public void onErrorResponse(VolleyError error1) {
 
+                        progressDialog.dismiss();
+                        ErrorDialog error = new ErrorDialog(Constant.API_ERROR_MSG,ProfileViwer.this);
+                        error.showLoader();
 
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
-                        System.out.println( error.toString());
-                        // progressDialog.dismiss();
-                         */
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
