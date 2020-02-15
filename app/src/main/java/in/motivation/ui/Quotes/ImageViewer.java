@@ -33,39 +33,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import in.motivation.R;
+import in.motivation.util.Util;
 
 public class ImageViewer extends Activity {
     private static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 54654;
 
 
-    public Uri getLocalBitmapUri(ImageView imageView) {
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-        // Extract Bitmap from ImageView drawable
-        Drawable drawable = imageView.getDrawable();
-        Bitmap bmp = null;
-        if (drawable instanceof BitmapDrawable){
-            bmp = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-        } else {
-            return null;
-        }
-        // Store image to default external storage directory
-        Uri bmpUri = null;
-        try {
-            // Use methods on Context to access package-specific directories on external storage.
-            // This way, you don't need to request external read/write permission.
-            // See https://youtu.be/5xVh-7ywKpE?t=25m25s
-            File file =  new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
-            FileOutputStream out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.close();
-            // **Warning:** This will fail for API >= 24, use a FileProvider as shown below instead.
-            bmpUri = Uri.fromFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bmpUri;
-    }
 
     ImageView imageView;
     @Override
@@ -124,7 +97,7 @@ File file=Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DO
             public void onClick(View v) {
 
                 // Get access to the URI for the bitmap
-                Uri bmpUri = getLocalBitmapUri(imageView);
+                Uri bmpUri = Util.getLocalBitmapUri(imageView,ImageViewer.this);
                 if (bmpUri != null) {
                     // Construct a ShareIntent with link to image
                     Intent shareIntent = new Intent();

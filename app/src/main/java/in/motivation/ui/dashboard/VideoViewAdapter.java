@@ -6,6 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,6 +28,9 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,8 +39,10 @@ import agency.tango.android.avatarview.IImageLoader;
 import agency.tango.android.avatarview.views.AvatarView;
 import in.motivation.R;
 import in.motivation.model.Video;
+import in.motivation.ui.Quotes.ImageViewer;
 import in.motivation.util.Constant;
 import in.motivation.util.ErrorDialog;
+import in.motivation.util.Util;
 
 public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.ViewHolder> {
     Context context;
@@ -130,6 +141,26 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
             @Override
             public void onClick(View v) {
 
+                Uri bmpUri = Util.getLocalBitmapUri(holder.imageView,context);
+                if (bmpUri != null) {
+                    // Construct a ShareIntent with link to image
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                    String shareMessage= "\nWatch motivational videos using this app.\nClick here to install:\n";
+                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=in.motivation";
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                    shareIntent.setType("image/*");
+                    // Launch sharing dialog for image
+                    context.startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                } else
+                    {
+
+                    Toast.makeText(context,"Error, Please try again",Toast.LENGTH_SHORT).show();
+
+                }
+
+/*
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
@@ -141,6 +172,8 @@ public class VideoViewAdapter extends RecyclerView.Adapter<VideoViewAdapter.View
                 } catch(Exception e) {
                    System.out.println(e);
                 }
+
+ */
             }
         });
 
